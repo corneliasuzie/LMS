@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Inscription - LMS</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <div class="container">
+    <div class="card" style="max-width:480px;margin:24px auto">
+      <h3>Créer un compte</h3>
+      <form id="registerForm">
+        <input id="r_name" placeholder="Nom complet" required />
+        <input id="r_email" placeholder="Email" type="email" required />
+        <input id="r_password" placeholder="Mot de passe" type="password" required />
+        <button class="btn" type="submit">S'inscrire</button>
+      </form>
+      <p class="small muted">Retour : <a href="index.html">Accueil</a></p>
+    </div>
+  </div>
+  <script>
+  document.getElementById('registerForm').addEventListener('submit', async function(e){
+    e.preventDefault();
+    const name = document.getElementById('r_name').value;
+    const email = document.getElementById('r_email').value;
+    const password = document.getElementById('r_password').value;
+    const res = await fetch('api/register.php', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,email,password})});
+    const j = await res.json();
+    if (j.success) { alert('Compte créé, connecte-toi'); location.href='index.html'; }
+    else alert(j.message||j.error||'Erreur');
+  });
+  </script>
+</body>
+</html>

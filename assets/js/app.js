@@ -3,7 +3,7 @@ const api = (path, opts={})=>fetch(path, Object.assign({credentials:'same-origin
 function el(id){return document.getElementById(id)}
 
 async function showCourses(){
-  const res = await api('/lms/api/courses.php');
+  const res = await api('api/courses.php');
   const list = el('coursesList'); list.innerHTML='';
   if (res.success){
     res.courses.forEach(c=>{
@@ -15,9 +15,9 @@ async function showCourses(){
 }
 
 async function enroll(courseId){
-  const me = await api('/lms/api/auth.php?action=me');
+  const me = await api('api/auth.php?action=me');
   if (!me.logged){ alert('Connecte-toi d\'abord'); return; }
-  const res = await api('/lms/api/enroll.php', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:me.user.id,course_id:courseId})});
+  const res = await api('api/enroll.php', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:me.user.id,course_id:courseId})});
   if (res.success) { alert('Inscription réussie'); showEnrollments(); }
   else alert(res.message||res.error||'Erreur');
 }
@@ -25,7 +25,7 @@ async function enroll(courseId){
 async function showEnrollments(){
   const me = await api('/lms/api/auth.php?action=me');
   if (!me.logged) { el('enrollments').innerHTML='<div class="muted">Connecte-toi pour voir tes inscriptions</div>'; return; }
-  const res = await api('/lms/api/enroll.php?user_id='+me.user.id);
+  const res = await api('api/enroll.php?user_id='+me.user.id);
   const out = el('enrollments'); out.innerHTML='';
   if (res.success){
     res.enrollments.forEach(e=>{
@@ -37,7 +37,7 @@ async function showEnrollments(){
 async function loginForm(e){
   e.preventDefault();
   const email = el('email').value, password = el('password').value;
-  const res = await api('/lms/api/auth.php?action=login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,password})});
+  const res = await api('api/auth.php?action=login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,password})});
   if (res.success){ document.location.reload(); } else alert(res.message||'Erreur');
 }
 

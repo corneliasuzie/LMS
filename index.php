@@ -29,115 +29,73 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (empty($email) || empty($mot_de_passe)) {
         $erreur = "Veuillez remplir tous les champs.";
     } else {
-        // Chercher l'utilisateur dans la base de données
-        // MD5() hash le mot de passe pour comparer avec celui stocké
-        $sql = "SELECT * FROM users WHERE email = '$email' AND mot_de_passe = MD5('$mot_de_passe')";
-        $resultat = mysqli_query($conn, $sql);
+        <?php
+        require_once 'config.php';
+        ?>
+        <!doctype html>
+        <html lang="fr">
+        <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <title>LMS - Simple & Créatif</title>
+            <link rel="stylesheet" href="assets/css/style.css">
+            <meta name="description" content="Prototype LMS simple - frontend HTML/CSS/JS, backend PHP/MySQL">
+        </head>
+        <body>
+            <div class="container">
+                <div class="header">
+                    <div class="brand">LMS Créatif</div>
+                    <div id="userArea"></div>
+                </div>
 
-        if (mysqli_num_rows($resultat) == 1) {
-            // L'utilisateur existe → mémoriser ses infos dans la session
-            $user = mysqli_fetch_assoc($resultat);
-            $_SESSION['utilisateur_id'] = $user['id'];
-            $_SESSION['nom'] = $user['nom'];
-            $_SESSION['email'] = $user['email'];
-            $_SESSION['role'] = $user['role'];
+                <div class="hero card">
+                    <div style="flex:1">
+                        <h2>Bienvenue — cours créatifs et simples</h2>
+                        <p class="muted">Utilise l'interface pour te connecter, parcourir les cours et t'inscrire.</p>
+                    </div>
+                    <div style="width:240px;text-align:right">
+                        <button id="btnRefresh" class="btn">Rafraîchir</button>
+                    </div>
+                </div>
 
-            // Rediriger selon le rôle
-            if ($user['role'] == 'admin') {
-                header("Location: admin/dashboard.php");
-            } elseif ($user['role'] == 'enseignant') {
-                header("Location: teacher/dashboard.php");
-            } else {
-                header("Location: student/dashboard.php");
-            }
-            exit();
-        } else {
-            $erreur = "Email ou mot de passe incorrect.";
-        }
-    }
-}
-?>
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <title>LMS - Connexion</title>
-    <link rel="stylesheet" href="css/style.css">
-<?php
-require_once 'config.php';
-// Page unique: le front est une petite SPA qui consomme /api/*
-?>
-<!doctype html>
-<html lang="fr">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>LMS - Refondé</title>
-    <link rel="stylesheet" href="/lms/assets/css/style.css">
-</head>
-<body>
-    <div class="container">
-        <div class="header">
-            <div class="brand">LMS Créatif</div>
-            <div id="userArea">
-                <form id="loginForm" class="card" style="display:inline-block;min-width:260px">
-                    <input id="email" placeholder="email" />
-                    <input id="password" type="password" placeholder="mot de passe" />
+                <div class="grid">
+                    <div>
+                        <div class="card">
+                            <h3>Cours disponibles</h3>
+                            <div id="coursesList" class="small muted">Chargement...</div>
+                        </div>
+                        <div class="card">
+                            <h3>Mes inscriptions</h3>
+                            <div id="enrollments" class="small muted">Chargement...</div>
+                        </div>
+                    </div>
+                    <aside>
+                        <div class="card">
+                            <h4>À propos</h4>
+                            <p class="small">Projet pédagogique : frontend clair (HTML/CSS/JS) et backend en PHP/MySQL.</p>
+                        </div>
+                    </aside>
+                </div>
+
+                <div class="footer">Ouvre <a href="/lms/">/lms/</a> dans ton navigateur. Login test : admin@example.com / password</div>
+            </div>
+
+            <template id="loginTpl">
+                <form id="loginForm" class="card" style="min-width:260px">
+                    <input id="email" placeholder="email" required />
+                    <input id="password" type="password" placeholder="mot de passe" required />
                     <button class="btn">Se connecter</button>
                 </form>
-            </div>
-        </div>
+            </template>
 
-        <div class="hero card">
-            <div style="flex:1">
-                <h2>Découvre des cours créatifs</h2>
-                <p class="muted">Interface légère: HTML/CSS/JS pour le frontend, PHP/MySQL pour le backend.</p>
-            </div>
-            <div style="width:240px;text-align:right">
-                <button id="btnRefresh" class="btn">Rafraîchir</button>
-            </div>
-        </div>
+            <template id="userTpl">
+                <div class="card small" style="display:flex;gap:10px;align-items:center">
+                    <div id="userName"></div>
+                    <div style="margin-left:auto"><a id="logoutBtn" href="#" class="btn">Déconnexion</a></div>
+                </div>
+            </template>
 
-        <div class="grid">
+            <script src="assets/js/app.js"></script>
+        </body>
+        </html>
             <div>
-                <div class="card">
-                    <h3>Cours disponibles</h3>
-                    <div id="coursesList" class="small muted">Chargement...</div>
-                </div>
-                <div class="card">
-                    <h3>Mes inscriptions</h3>
-                    <div id="enrollments" class="small muted">Chargement...</div>
-                </div>
-            </div>
-            <aside>
-                <div class="card">
-                    <h4>À propos</h4>
-                    <p class="small">Application simple, évolutive — modifie facilement HTML/CSS/JS côté frontend, PHP/MySQL côté backend.</p>
-                </div>
-            </aside>
-        </div>
-
-        <div class="footer">Développé pour démonstration — teste via <a href="/lms/">/lms/</a></div>
-    </div>
-    <script src="/lms/assets/js/app.js"></script>
-</body>
-</html>
-            <div class="form-group">
-                <label>Mot de passe</label>
-                <input type="password" name="mot_de_passe" placeholder="Votre mot de passe" required>
-            </div>
-            <button type="submit" class="btn btn-bleu" style="width:100%">Se connecter</button>
-        </form>
-
-        <br>
-        <p style="font-size:13px; color:#888;">
-            Pas encore de compte ? 
-            <a href="register.php">S'inscrire</a>
-        </p>
-
-       
-    </div>
-</div>
-
-</body>
-</html>

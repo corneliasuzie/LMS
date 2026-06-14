@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>Leçon</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <nav>
+    <a href="dashboard.html" class="logo">🎓 LMS Étudiant</a>
+    <div>
+      <a href="courses.html">Cours</a>
+      <a href="progress.html">Ma progression</a>
+      <a href="certificates.html">Mes certificats</a>
+      <a href="../index.html">Accueil</a>
+    </div>
+  </nav>
+  <div class="container" id="lesson">
+    <h1>Leçon</h1>
+    <p>Contenu dynamique (PDF/vidéo) doit être servi depuis `uploads/`. Voir la leçon en ajoutant `?id=LECON_ID`.</p>
+  </div>
+  <script>
+    (function(){
+      const params = new URLSearchParams(location.search);
+      const id = params.get('id');
+      if(!id) return;
+      document.getElementById('lesson').insertAdjacentHTML('beforeend', `<p>ID leçon : ${id}</p>`);
+    })();
+  </script>
+</body>
+</html>

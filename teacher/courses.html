@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>Mes cours</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <nav>
+    <a href="dashboard.html" class="logo">🎓 LMS Enseignant</a>
+    <div>
+      <a href="courses.html">Mes cours</a>
+      <a href="../index.html">Accueil</a>
+    </div>
+  </nav>
+  <div class="container" id="courses">
+    <h1>Mes cours</h1>
+    <p>Chargement...</p>
+  </div>
+  <script>
+    async function load(){
+      try{
+        const r = await fetch('../api/courses.php');
+        const data = await r.json();
+        const el = document.getElementById('courses');
+        if(Array.isArray(data)) el.innerHTML = data.map(c=>`<div class="card"><h3>${c.titre}</h3><p>${c.description||''}</p></div>`).join('');
+        else el.innerHTML = '<p>Aucun cours.</p>';
+      }catch(e){ document.getElementById('courses').innerHTML = '<p>Erreur: '+e.message+'</p>' }
+    }
+    load();
+  </script>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>Cours</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <nav>
+    <a href="dashboard.html" class="logo">🎓 LMS Étudiant</a>
+    <div>
+      <a href="courses.html">Cours</a>
+      <a href="progress.html">Ma progression</a>
+      <a href="certificates.html">Mes certificats</a>
+      <a href="../index.html">Accueil</a>
+    </div>
+  </nav>
+  <div class="container" id="list">
+    <h1>Chargement des cours...</h1>
+  </div>
+  <script>
+    async function load(){
+      const el = document.getElementById('list');
+      try{
+        const r = await fetch('../api/courses.php');
+        const data = await r.json();
+        if(Array.isArray(data)){
+          el.innerHTML = data.map(c=>`<div class="card"><h3>${c.titre}</h3><p>${c.description||''}</p></div>`).join('');
+        } else {
+          el.innerHTML = '<p>Aucun cours trouvé.</p>';
+        }
+      }catch(e){ el.innerHTML = '<p>Erreur: '+e.message+'</p>'; }
+    }
+    load();
+  </script>
+</body>
+</html>

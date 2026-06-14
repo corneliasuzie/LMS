@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>Enseignant - Tableau de bord</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <nav>
+    <a href="dashboard.html" class="logo">🎓 LMS Enseignant</a>
+    <div>
+      <a href="courses.html">Mes cours</a>
+      <a href="../index.html">Accueil</a>
+    </div>
+  </nav>
+  <div class="container" id="main">
+    <h1>Chargement...</h1>
+  </div>
+  <script>
+    async function init(){
+      try{
+        const res = await fetch('../api/auth.php?action=me', {credentials:'same-origin'});
+        const me = await res.json();
+        const main = document.getElementById('main');
+        if(me.logged && me.user.role=='enseignant'){
+          main.innerHTML = `<h1>Bonjour ${me.user.nom}</h1><p><a href='courses.html'>Voir mes cours</a></p>`;
+        } else {
+          main.innerHTML = '<h1>Accès non autorisé</h1><p>Connectez-vous en tant qu\'enseignant.</p>';
+        }
+      }catch(e){ document.getElementById('main').innerHTML = '<p>Erreur: '+e.message+'</p>' }
+    }
+    init();
+  </script>
+</body>
+</html>

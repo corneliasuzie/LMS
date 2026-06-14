@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>Étudiant - Tableau de bord</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <nav>
+    <a href="dashboard.html" class="logo">🎓 LMS Étudiant</a>
+    <div>
+      <a href="courses.html">Cours</a>
+      <a href="progress.html">Ma progression</a>
+      <a href="certificates.html">Mes certificats</a>
+      <a href="../index.html">Accueil</a>
+    </div>
+  </nav>
+
+  <div class="container" id="app">
+    <h1>Chargement...</h1>
+  </div>
+
+  <script>
+    async function init(){
+      const main = document.getElementById('app');
+      try{
+        const res = await fetch('../api/auth.php?action=me', {credentials: 'same-origin'});
+        const me = await res.json();
+        if(me.logged){
+          main.innerHTML = `<h1>Bonjour, ${me.user.nom}</h1><p>Rôle : ${me.user.role}</p><p><a href="courses.html">Voir les cours</a></p>`;
+        } else {
+          main.innerHTML = `<h1>Bienvenue</h1><p>Vous n'êtes pas connecté. <a href="../index.html">Se connecter</a></p>`;
+        }
+      }catch(e){
+        main.innerHTML = `<h1>Erreur de chargement</h1><p>${e.message}</p>`;
+      }
+    }
+    init();
+  </script>
+</body>
+</html>

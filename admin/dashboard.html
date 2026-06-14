@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>Admin - Tableau de bord</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <nav>
+    <a href="dashboard.html" class="logo">🎓 LMS Admin</a>
+    <div>
+      <a href="modules.html">Modules</a>
+      <a href="users.html">Utilisateurs</a>
+      <a href="certificates.html">Certificats</a>
+      <a href="../index.html">Accueil</a>
+    </div>
+  </nav>
+  <div class="container" id="main">
+    <h1>Chargement...</h1>
+  </div>
+  <script>
+    async function init(){
+      try{
+        const r = await fetch('../api/auth.php?action=me',{credentials:'same-origin'});
+        const me = await r.json();
+        const main = document.getElementById('main');
+        if(me.logged && me.user.role=='admin') main.innerHTML = `<h1>Bonjour ${me.user.nom}</h1><p>Gérer la plateforme depuis les pages ci-dessus.</p>`;
+        else main.innerHTML = '<h1>Accès non autorisé</h1>';
+      }catch(e){ document.getElementById('main').innerHTML = '<p>Erreur: '+e.message+'</p>' }
+    }
+    init();
+  </script>
+</body>
+</html>

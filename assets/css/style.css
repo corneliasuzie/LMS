@@ -1,0 +1,19 @@
+/* Style simple, clair et modulable */
+:root{--bg:#f7f7f9;--card:#ffffff;--accent:#2b6df6;--muted:#6b7280}
+*{box-sizing:border-box;font-family:Inter,Segoe UI,Helvetica,Arial,sans-serif}
+body{margin:0;background:var(--bg);color:#111}
+.container{max-width:980px;margin:28px auto;padding:18px}
+.header{display:flex;align-items:center;justify-content:space-between}
+.brand{font-weight:700;color:var(--accent);font-size:1.4rem}
+.card{background:var(--card);padding:16px;border-radius:10px;box-shadow:0 1px 2px rgba(16,24,40,0.04);margin-top:14px}
+.grid{display:grid;grid-template-columns:1fr 320px;gap:18px}
+.list-item{padding:10px;border-radius:8px;border:1px solid #eee;margin-bottom:10px}
+.btn{display:inline-block;padding:8px 12px;background:var(--accent);color:#fff;border-radius:8px;text-decoration:none}
+.muted{color:var(--muted)}
+form input,form button,textarea{width:100%;padding:8px;margin-top:8px}
+.hero{display:flex;gap:18px;align-items:center}
+.small{font-size:0.9rem}
+.footer{margin-top:28px;font-size:0.85rem;color:var(--muted)}
+
+/* responsive */
+@media (max-width:900px){.grid{grid-template-columns:1fr}}

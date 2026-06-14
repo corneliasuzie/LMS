@@ -63,65 +63,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <meta charset="UTF-8">
     <title>LMS - Connexion</title>
     <link rel="stylesheet" href="css/style.css">
-<?php
-require_once 'config.php';
-// Page unique: le front est une petite SPA qui consomme /api/*
-?>
-<!doctype html>
-<html lang="fr">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>LMS - Refondé</title>
-    <link rel="stylesheet" href="/lms/assets/css/style.css">
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <div class="brand">LMS Créatif</div>
-            <div id="userArea">
-                <form id="loginForm" class="card" style="display:inline-block;min-width:260px">
-                    <input id="email" placeholder="email" />
-                    <input id="password" type="password" placeholder="mot de passe" />
-                    <button class="btn">Se connecter</button>
-                </form>
-            </div>
-        </div>
 
-        <div class="hero card">
-            <div style="flex:1">
-                <h2>Découvre des cours créatifs</h2>
-                <p class="muted">Interface légère: HTML/CSS/JS pour le frontend, PHP/MySQL pour le backend.</p>
-            </div>
-            <div style="width:240px;text-align:right">
-                <button id="btnRefresh" class="btn">Rafraîchir</button>
-            </div>
-        </div>
+<div class="page-connexion">
+    <div class="boite-connexion">
+        <h1>📚 LMS Yaoundé</h1>
+        <p>Plateforme d'apprentissage en ligne</p>
 
-        <div class="grid">
-            <div>
-                <div class="card">
-                    <h3>Cours disponibles</h3>
-                    <div id="coursesList" class="small muted">Chargement...</div>
-                </div>
-                <div class="card">
-                    <h3>Mes inscriptions</h3>
-                    <div id="enrollments" class="small muted">Chargement...</div>
-                </div>
-            </div>
-            <aside>
-                <div class="card">
-                    <h4>À propos</h4>
-                    <p class="small">Application simple, évolutive — modifie facilement HTML/CSS/JS côté frontend, PHP/MySQL côté backend.</p>
-                </div>
-            </aside>
-        </div>
+        <!-- Afficher l'erreur si elle existe -->
+        <?php if ($erreur): ?>
+            <div class="alerte alerte-erreur"><?= $erreur ?></div>
+        <?php endif; ?>
 
-        <div class="footer">Développé pour démonstration — teste via <a href="/lms/">/lms/</a></div>
-    </div>
-    <script src="/lms/assets/js/app.js"></script>
-</body>
-</html>
+        <!-- Formulaire de connexion -->
+        <form method="POST" action="">
+            <div class="form-group">
+                <label>Adresse email</label>
+                <input type="email" name="email" placeholder="votre@email.com" required>
+            </div>
             <div class="form-group">
                 <label>Mot de passe</label>
                 <input type="password" name="mot_de_passe" placeholder="Votre mot de passe" required>
@@ -135,7 +95,13 @@ require_once 'config.php';
             <a href="register.php">S'inscrire</a>
         </p>
 
-       
+        <!-- Comptes de test pour les démonstrations -->
+        <div style="margin-top:20px; padding:10px; background:#f5f5f5; border-radius:5px; font-size:12px; text-align:left;">
+            <strong>Comptes de test :</strong><br>
+            Admin : admin@lms.com / admin123<br>
+            Enseignant : prof@lms.com / prof123<br>
+            Étudiant : marie@lms.com / marie123
+        </div>
     </div>
 </div>
 
